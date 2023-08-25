@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: seamlesshr-logstash-config
+data:
+  logstash.conf: |-
+    input {
+      beats {
+        port => 5044
+      }
+    }
+    filter {
+      # Add your log parsing and filtering rules here
+    }
+    output {
+      elasticsearch {
+        hosts => ["elasticsearch-seamlesshr:9200"]
+      }
+    }

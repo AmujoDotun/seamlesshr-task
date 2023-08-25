@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seamlesshr-sample-app
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: seamlesshr-sample-app
+    spec:
+      containers:
+      - name: seamlesshr-sample-app
+        image: image-url:tag
+        ports:
+        - containerPort: 80

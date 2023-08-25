@@ -1,0 +1,45 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+
+    - name: Build and Test
+      run: |
+        # Replace with your actual build commands
+        ./mvnw clean install  # Example for Maven-based project
+
+    - name: Deploy to Staging
+      if: success()
+      run: |
+        # Replace with your actual deployment to staging commands
+        # For example, deploy to a Docker container in a Kubernetes cluster
+        kubectl apply -f ./staging-deployment.yaml
+
+    - name: Deploy to Production
+      if: manual
+      run: |
+        # Replace with your actual deployment to production commands
+        # For example, deploy to a Docker container in a Kubernetes cluster
+        kubectl apply -f ./production-deployment.yaml
+
+    - name: Rollback on Deployment Failure
+      if: failure()
+      run: |
+        # Replace with your actual rollback strategy
+        # Example: Roll back to the previous Kubernetes deployment
+        kubectl rollout undo deployment/my-app-deployment
